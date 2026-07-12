@@ -11,7 +11,7 @@ namespace html {
             return std::move(nodes[0]);
         }
 
-        return std::make_unique<ElementNode>("html", std::unordered_map<std::string, std::string>(),
+        return std::make_unique<ElementNode>("html", AttrMap(),
                                              std::move(nodes));
     }
 
@@ -41,8 +41,8 @@ namespace html {
         return std::make_unique<TextNode>(consumeWhile([](const char c) { return c != '<'; }));
     }
 
-    std::unordered_map<std::string, std::string> Parser::parseAttributes() {
-        std::unordered_map<std::string, std::string> attributes;
+    AttrMap Parser::parseAttributes() {
+        AttrMap attributes;
 
         consumeWhiteSpace();
 
@@ -87,7 +87,7 @@ namespace html {
         // Opening tag
         expect("<");
         std::string tagName = parseName();
-        std::unordered_map<std::string, std::string> attrs = parseAttributes();
+        AttrMap attrs = parseAttributes();
         expect(">");
 
         // Content

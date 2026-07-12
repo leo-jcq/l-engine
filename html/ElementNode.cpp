@@ -1,8 +1,8 @@
 #include "ElementNode.h"
 
 namespace html {
-    ElementNode::ElementNode(std::string tagName, std::unordered_map<std::string, std::string> attrs,
-                             std::vector<std::unique_ptr<Node> > children) : Node(Element),
+    ElementNode::ElementNode(std::string tagName, AttrMap attrs,
+                             std::vector<std::unique_ptr<Node> > children) : Node(NodeType::Element),
                                                                              tagName(std::move(tagName)),
                                                                              attrs(std::move(attrs)),
                                                                              children(std::move(children)) {

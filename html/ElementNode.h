@@ -10,6 +10,9 @@
 #include "Node.h"
 
 namespace html {
+    /// A map of attribute names to values for an HTML element.
+    using AttrMap = std::unordered_map<std::string, std::string>;
+
     /// A node representing an HTML element (e.g. <div>).
     class ElementNode : public Node {
     public:
@@ -19,8 +22,7 @@ namespace html {
          * @param attrs The attributes of the element as a name -> value map.
          * @param children The child nodes of the element.
          */
-        ElementNode(std::string tagName, std::unordered_map<std::string, std::string> attrs,
-                    std::vector<std::unique_ptr<Node> > children);
+        ElementNode(std::string tagName, AttrMap attrs, std::vector<std::unique_ptr<Node> > children);
 
         /**
          *.
@@ -33,7 +35,7 @@ namespace html {
         /**
          * @return All attributes of this element as a name -> value map.
          */
-        [[nodiscard]] const std::unordered_map<std::string, std::string> &getAttrs() const {
+        [[nodiscard]] const AttrMap &getAttrs() const {
             return attrs;
         }
 
@@ -55,7 +57,7 @@ namespace html {
         /// The tag name of the element (e.g. "div").
         std::string tagName;
         /// The attributes of the element as a name -> value map.
-        std::unordered_map<std::string, std::string> attrs;
+        AttrMap attrs;
         /// The child nodes of the element.
         std::vector<std::unique_ptr<Node> > children;
     };

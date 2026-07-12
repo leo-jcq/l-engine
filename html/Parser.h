@@ -102,7 +102,7 @@ namespace html {
          * Parse attributes from the input, consisting of name-value pairs.
          * @return An unordered map containing the parsed attributes, where the keys are attribute names and the values are attribute values.
          */
-        std::unordered_map<std::string, std::string> parseAttributes();
+        AttrMap parseAttributes();
 
         /**
          * Parse a single attribute from the input, consisting of a name and a value.
