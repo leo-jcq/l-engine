@@ -1,0 +1,145 @@
+#ifndef L_ENGINE_PARSER_H
+#define L_ENGINE_PARSER_H
+
+#include <functional>
+
+#include "ElementNode.h"
+#include "Node.h"
+#include "TextNode.h"
+
+namespace html {
+    /// A class for parsing HTML input strings into a tree of Node objects.
+    class Parser {
+    public:
+        /**
+         * Construct a new Parser object with the given input string.
+         * @param input The input string to be parsed.
+         */
+        explicit Parser(std::string input);
+
+        /**
+         * Parse the input string.
+         * @return A unique pointer to the root node of the parsed tree.
+         */
+        std::unique_ptr<Node> parse();
+
+    private:
+        /// The current position in the input string.
+        size_t pos;
+        /// The input string to be parsed.
+        std::string input;
+
+        /**
+         * Read the current character without consuming it.
+         * @return The current character.
+         */
+        [[nodiscard]] char nextChar() const {
+            return input[pos];
+        }
+
+        /**
+         * Check if the input starts with the given string.
+         * @param s The string to check for.
+         * @return @code true@endcode if the input starts with the given string, @code false@endcode otherwise.
+         */
+        [[nodiscard]] bool startsWith(const std::string &s) const;
+
+        /**
+         * Consume the given string from the input.
+         * If the input does not start with the given string, an exception is thrown.
+         * @param s The string to consume.
+         * @throws runtime_error The input does not start with the given string.
+         */
+        void expect(const std::string &s);
+
+        /**
+         * Check if the end of the input has been reached.
+         * @return @code true@endcode if the end of the input has been reached, @code false@endcode otherwise.
+         */
+        [[nodiscard]] bool eof() const {
+            return pos >= input.size();
+        }
+
+        /**
+         * Consume the current character and return it.
+         * @return The current character.
+         */
+        char consumeChar() {
+            const char c = nextChar();
+            pos++;
+            return c;
+        }
+
+        /**
+         * Consume characters from the input while the given test function returns true.
+         * @param test A function that takes a character and returns true if it should be consumed, false otherwise.
+         * @return A string containing the consumed characters.
+         */
+        std::string consumeWhile(const std::function<bool (char)> &test);
+
+        /// Consume whitespace characters from the input
+        void consumeWhiteSpace() {
+            consumeWhile([](const char c) { return static_cast<bool>(std::isspace(static_cast<unsigned char>(c))); });
+        }
+
+        /**
+         * Parse a name from the input, consisting of alphanumeric characters.
+         * @return A string containing the parsed name.
+         */
+        std::string parseName() {
+            return consumeWhile([](const char c) {
+                return static_cast<bool>(std::isalnum(static_cast<unsigned char>(c)));
+            });
+        }
+
+        /**
+         * Parse a text node from the input, consisting of characters until a '<' is encountered.
+         * @return A unique pointer to a TextNode containing the parsed text.
+         */
+        std::unique_ptr<TextNode> parseText();
+
+        /**
+         * Parse attributes from the input, consisting of name-value pairs.
+         * @return An unordered map containing the parsed attributes, where the keys are attribute names and the values are attribute values.
+         */
+        std::unordered_map<std::string, std::string> parseAttributes();
+
+        /**
+         * Parse a single attribute from the input, consisting of a name and a value.
+         * @return A tuple containing the parsed attribute name and value.
+         */
+        std::tuple<std::string, std::string> parseAttr();
+
+        /**
+         * Parse an attribute value from the input, which is enclosed in either single or double quotes.
+         * @return A string containing the parsed attribute value.
+         * @throw runtime_error If the attribute value is not properly enclosed in quotes.
+         */
+        std::string parseAttrValue();
+
+        /**
+         * Parse an element node from the input, consisting of a tag name, attributes, and child nodes.
+         * @return A unique pointer to an ElementNode containing the parsed element.
+         */
+        std::unique_ptr<ElementNode> parseElement();
+
+        /**
+         * Parse child nodes from the input until a closing tag is encountered.
+         * @return A vector of unique pointers to Node objects representing the parsed child nodes.
+         */
+        std::vector<std::unique_ptr<Node> > parseNodes();
+
+        /**
+         * Parse a single node from the input, which can be either an element or a text node.
+         * @return A unique pointer to a Node object representing the parsed node.
+         */
+        std::unique_ptr<Node> parseNode() {
+            if (startsWith("<"))
+                return parseElement();
+
+            return parseText();
+        }
+    };
+}
+
+#endif
