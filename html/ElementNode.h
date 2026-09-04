@@ -13,7 +13,7 @@ namespace html {
     /// A map of attribute names to values for an HTML element.
     using AttrMap = std::unordered_map<std::string, std::string>;
 
-    /// A node representing an HTML element (e.g. <div>).
+    /// A node representing an HTML element (e.g. "<div>").
     class ElementNode : public Node {
     public:
         /**
@@ -25,7 +25,7 @@ namespace html {
         ElementNode(std::string tagName, AttrMap attrs, std::vector<std::unique_ptr<Node> > children);
 
         /**
-         *.
+         * Get the tag name of this element (e.g. "div").
          * @return The tag name of this element (e.g. "div").
          */
         [[nodiscard]] const std::string &getTagName() const {
@@ -33,6 +33,7 @@ namespace html {
         }
 
         /**
+         * Get all attributes of this element as a name -> value map.
          * @return All attributes of this element as a name -> value map.
          */
         [[nodiscard]] const AttrMap &getAttrs() const {
@@ -47,6 +48,7 @@ namespace html {
         [[nodiscard]] std::optional<std::string> getAttribute(const std::string &name) const;
 
         /**
+         * Get the child nodes of the element.
          * @return The child nodes of the element.
          */
         [[nodiscard]] const std::vector<std::unique_ptr<Node> > &getChildren() const {

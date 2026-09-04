@@ -8,3 +8,4 @@ For now, it only parses basic HTML without certain features like :
 - HTML comments (e.g. `<!-- comment -->`)
 - The `<!DOCTYPE html>` tag
 - HTML entities (e.g. `&nbsp;`, `&lt;`, etc.)
+- Boolean attributes (e.g. `disabled`)

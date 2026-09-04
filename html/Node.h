@@ -23,9 +23,10 @@ namespace html {
         Node &operator=(Node &&) = default;
 
         /**
+         * Get the type of this node (either Text or Element).
          * @return The type of this node (either Text or Element).
          */
-        [[nodiscard]] NodeType getType() const {
+        [[nodiscard]] const NodeType &getType() const {
             return type;
         }
 

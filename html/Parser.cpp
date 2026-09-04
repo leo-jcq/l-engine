@@ -1,44 +1,53 @@
 #include "Parser.h"
 
+#include <utility>
+
 namespace html {
-    Parser::Parser(std::string input) : pos(0), input(std::move(input)) {
+    Parser::Parser(std::string input) : BaseParser(std::move(input)) {
     }
 
     std::unique_ptr<Node> Parser::parse() {
         std::vector<std::unique_ptr<Node> > nodes = parseNodes();
 
+        if (!eof()) {
+            throw std::runtime_error("Unexpected content at byte " + std::to_string(pos));
+        }
+
         if (nodes.size() == 1) {
             return std::move(nodes[0]);
         }
 
-        return std::make_unique<ElementNode>("html", AttrMap(),
-                                             std::move(nodes));
+        return std::make_unique<ElementNode>("html", AttrMap(), std::move(nodes));
     }
 
-    bool Parser::startsWith(const std::string &s) const {
-        return input.compare(pos, s.size(), s) == 0;
-    }
+    std::vector<std::unique_ptr<Node> > Parser::parseNodes() {
+        std::vector<std::unique_ptr<Node> > nodes;
 
-    void Parser::expect(const std::string &s) {
-        if (startsWith(s)) {
-            pos += s.size();
-        } else {
-            throw std::runtime_error("Expected " + s + " at byte " + std::to_string(pos) + " but it was not found");
-        }
-    }
+        consumeWhiteSpace();
 
-    std::string Parser::consumeWhile(const std::function<bool (char)> &test) {
-        std::string result;
-
-        while (!eof() && test(nextChar())) {
-            result += consumeChar();
+        while (!eof() && !startsWith("</")) {
+            nodes.push_back(parseNode());
         }
 
-        return result;
+        return nodes;
     }
 
-    std::unique_ptr<TextNode> Parser::parseText() {
-        return std::make_unique<TextNode>(consumeWhile([](const char c) { return c != '<'; }));
+    std::unique_ptr<ElementNode> Parser::parseElement() {
+        // Opening tag
+        expect("<");
+        std::string tagName = parseName();
+        AttrMap attrs = parseAttributes();
+        expect(">");
+
+        // Content
+        std::vector<std::unique_ptr<Node> > children = parseNodes();
+
+        // Closing tag
+        expect("</");
+        expect(tagName);
+        expect(">");
+
+        return std::make_unique<ElementNode>(std::move(tagName), std::move(attrs), std::move(children));
     }
 
     AttrMap Parser::parseAttributes() {
@@ -83,33 +92,7 @@ namespace html {
         return value;
     }
 
-    std::unique_ptr<ElementNode> Parser::parseElement() {
-        // Opening tag
-        expect("<");
-        std::string tagName = parseName();
-        AttrMap attrs = parseAttributes();
-        expect(">");
-
-        // Content
-        std::vector<std::unique_ptr<Node> > children = parseNodes();
-
-        // Closing tag
-        expect("</");
-        expect(tagName);
-        expect(">");
-
-        return std::make_unique<ElementNode>(std::move(tagName), std::move(attrs), std::move(children));
-    }
-
-    std::vector<std::unique_ptr<Node> > Parser::parseNodes() {
-        std::vector<std::unique_ptr<Node> > nodes;
-
-        consumeWhiteSpace();
-
-        while (!eof() && !startsWith("</")) {
-            nodes.push_back(parseNode());
-        }
-
-        return nodes;
+    std::unique_ptr<TextNode> Parser::parseText() {
+        return std::make_unique<TextNode>(consumeWhile([](const char c) { return c != '<'; }));
     }
 }

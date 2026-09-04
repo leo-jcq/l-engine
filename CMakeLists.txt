@@ -4,6 +4,8 @@ project(l-engine)
 set(CMAKE_CXX_STANDARD 20)
 
 add_executable(l-engine main.cpp
+        BaseParser.cpp
+        BaseParser.h
         html/Node.h
         html/Node.cpp
         html/NodeType.h
