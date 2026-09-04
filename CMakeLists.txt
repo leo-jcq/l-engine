@@ -14,4 +14,21 @@ add_executable(l-engine main.cpp
         html/ElementNode.h
         html/ElementNode.cpp
         html/Parser.h
-        html/Parser.cpp)
+        html/Parser.cpp
+        css/Selector.cpp
+        css/Selector.h
+        css/Rule.cpp
+        css/Rule.h
+        css/Declaration.cpp
+        css/Declaration.h
+        css/Color.h
+        css/Color.cpp
+        css/Unit.h
+        css/Dimension.cpp
+        css/Dimension.h
+        css/Parser.cpp
+        css/Parser.h
+        css/Stylesheet.cpp
+        css/Stylesheet.h
+        utils.h
+        utils.h)

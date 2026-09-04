@@ -62,6 +62,20 @@ protected:
     }
 
     /**
+     * Consume the given number of characters from the input and return them as a string.
+     * @param count The number of characters to consume.
+     * @return A string containing the consumed characters.
+     */
+    std::string consumeChar(const int count) {
+        // Get chars
+        std::string chars = input.substr(pos, count);
+
+        pos += count;
+
+        return chars;
+    }
+
+    /**
      * Consume characters from the input while the given test function returns true.
      * @param test A function that takes a character and returns true if it should be consumed, false otherwise.
      * @return A string containing the consumed characters.
