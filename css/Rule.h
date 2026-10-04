@@ -17,6 +17,13 @@ namespace css {
          */
         Rule(std::vector<Selector> selectors, std::vector<Declaration> declarations);
 
+        [[nodiscard]] const std::vector<Selector>& getSelectors() const {
+            return selectors;
+        }
+        [[nodiscard]] const std::vector<Declaration>& getDeclarations() const {
+            return declarations;
+        }
+
     private:
         /// The selectors matching the elements this rule applies to.
         std::vector<Selector> selectors;

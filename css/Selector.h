@@ -13,6 +13,14 @@ namespace css {
     class Selector {
     public:
         /**
+         * Get the tag name of this selector (e.g. "div").
+         * @return The tag name to match, if any.
+         */
+        [[nodiscard]] const std::optional<std::string>& getTagName() const {
+            return tagName;
+        }
+
+        /**
          * Set the tag name of this selector (e.g. "div").
          * @param newTagName The tag name to match.
          */
@@ -21,11 +29,27 @@ namespace css {
         }
 
         /**
+         * Get the id of this selector (e.g. "bar" for "#bar").
+         * @return The id to match, if any.
+         */
+        [[nodiscard]] const std::optional<std::string>& getId() const {
+            return id;
+        }
+
+        /**
          * Set the id of this selector (e.g. "bar" for "#bar").
          * @param newId The id to match.
          */
         void setId(std::string newId) {
             id = std::move(newId);
+        }
+
+        /**
+         * Get the class names of this selector (e.g. "foo" for ".foo").
+         * @return The class names to match.
+         */
+        [[nodiscard]] const std::vector<std::string>& getClassName() const {
+            return className;
         }
 
         /**

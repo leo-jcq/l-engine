@@ -15,6 +15,10 @@ namespace css {
          */
         explicit Stylesheet(std::vector<Rule> rules);
 
+        [[nodiscard]] const std::vector<Rule>& getRules() const {
+            return rules;
+        }
+
     private:
         /// The rules making up this stylesheet.
         std::vector<Rule> rules;
