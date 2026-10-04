@@ -12,7 +12,7 @@ int main(const int argc, char *argv[]) {
     const std::string fileContent = openAndRead(argv[1]);
 
     html::Parser parser(fileContent);
-    const std::unique_ptr<html::Node> node = parser.parse();
+    const std::unique_ptr<dom::Node> node = parser.parse();
 
     std::string html;
     node->toHTML(html, 0);

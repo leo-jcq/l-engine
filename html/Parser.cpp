@@ -6,8 +6,8 @@ namespace html {
     Parser::Parser(std::string input) : BaseParser(std::move(input)) {
     }
 
-    std::unique_ptr<Node> Parser::parse() {
-        std::vector<std::unique_ptr<Node> > nodes = parseNodes();
+    std::unique_ptr<dom::Node> Parser::parse() {
+        std::vector<std::unique_ptr<dom::Node> > nodes = parseNodes();
 
         if (!eof()) {
             throw std::runtime_error("Unexpected content at byte " + std::to_string(pos));
@@ -17,11 +17,11 @@ namespace html {
             return std::move(nodes[0]);
         }
 
-        return std::make_unique<ElementNode>("html", AttrMap(), std::move(nodes));
+        return std::make_unique<dom::ElementNode>("html", dom::AttrMap(), std::move(nodes));
     }
 
-    std::vector<std::unique_ptr<Node> > Parser::parseNodes() {
-        std::vector<std::unique_ptr<Node> > nodes;
+    std::vector<std::unique_ptr<dom::Node> > Parser::parseNodes() {
+        std::vector<std::unique_ptr<dom::Node> > nodes;
 
         consumeWhiteSpace();
 
@@ -33,32 +33,32 @@ namespace html {
         return nodes;
     }
 
-    std::unique_ptr<Node> Parser::parseNode() {
+    std::unique_ptr<dom::Node> Parser::parseNode() {
         if (startsWith("<")) return parseElement();
 
         return parseText();
     }
 
-    std::unique_ptr<ElementNode> Parser::parseElement() {
+    std::unique_ptr<dom::ElementNode> Parser::parseElement() {
         // Opening tag
         expect("<");
         std::string tagName = parseName();
-        AttrMap attrs = parseAttributes();
+        dom::AttrMap attrs = parseAttributes();
         expect(">");
 
         // Content
-        std::vector<std::unique_ptr<Node> > children = parseNodes();
+        std::vector<std::unique_ptr<dom::Node> > children = parseNodes();
 
         // Closing tag
         expect("</");
         expect(tagName);
         expect(">");
 
-        return std::make_unique<ElementNode>(std::move(tagName), std::move(attrs), std::move(children));
+        return std::make_unique<dom::ElementNode>(std::move(tagName), std::move(attrs), std::move(children));
     }
 
-    AttrMap Parser::parseAttributes() {
-        AttrMap attributes;
+    dom::AttrMap Parser::parseAttributes() {
+        dom::AttrMap attributes;
 
         consumeWhiteSpace();
 
@@ -99,7 +99,7 @@ namespace html {
         return value;
     }
 
-    std::unique_ptr<TextNode> Parser::parseText() {
-        return std::make_unique<TextNode>(consumeWhile([](const char c) { return c != '<'; }));
+    std::unique_ptr<dom::TextNode> Parser::parseText() {
+        return std::make_unique<dom::TextNode>(consumeWhile([](const char c) { return c != '<'; }));
     }
 }

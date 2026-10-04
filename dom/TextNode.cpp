@@ -1,10 +1,10 @@
 #include "TextNode.h"
 
-namespace html {
+namespace dom {
     TextNode::TextNode(std::string text) : Node(NodeType::Text), text(std::move(text)) {
     }
 
-    int TextNode::getTotalElementNodeChildrens() const {
+    int TextNode::getTotalElementNodeChildren() const {
         return 0;
     }
 

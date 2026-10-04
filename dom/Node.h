@@ -1,11 +1,12 @@
 #ifndef L_ENGINE_NODE_H
 #define L_ENGINE_NODE_H
 
+#include <memory>
 #include <string>
 
 #include "NodeType.h"
 
-namespace html {
+namespace dom {
     /// A base class for all nodes in the HTML tree.
     class Node {
     public:
@@ -36,7 +37,7 @@ namespace html {
          * Get the total number of child nodes that are of type ElementNode, recursively counting all descendants.
          * @return The total number of child nodes that are of type ElementNode, recursively counting all descendants.
          */
-        [[nodiscard]] virtual int getTotalElementNodeChildrens() const;
+        [[nodiscard]] virtual int getTotalElementNodeChildren() const;
 
         /**
          * Convert this node and its children to an HTML string representation, appending it to the given output string.

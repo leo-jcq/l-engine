@@ -5,7 +5,7 @@
 
 #include "Node.h"
 
-namespace html {
+namespace dom {
     /// Represents a text node in the HTML document tree.
     class TextNode : public Node {
     public:
@@ -16,13 +16,14 @@ namespace html {
         explicit TextNode(std::string text);
 
         /**
+         * Get the raw text content of this node.
          * @return The raw text content of this node.
          */
         [[nodiscard]] const std::string &getText() const {
             return text;
         }
 
-        [[nodiscard]] int getTotalElementNodeChildrens() const override;
+        [[nodiscard]] int getTotalElementNodeChildren() const override;
 
         void toHTML(std::string &out, int level) const override;
 

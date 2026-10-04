@@ -25,23 +25,23 @@ For now, it only parses basic HTML and CSS without certain features like :
 
 #### HTML
 
-An HTML document is represented as a tree of nodes. The base class [Node](./html/Node.h) is the common type of all
+An HTML document is represented as a tree of nodes. The base class [Node](./dom/Node.h) is the common type of all
 nodes in the tree. Two classes derive from it:
 
-- [TextNode](./html/TextNode.h): a text segment of the document.
-- [ElementNode](./html/ElementNode.h): an HTML element. It holds a tag name, a list of attributes and a list of child
+- [TextNode](./dom/TextNode.h): a text segment of the document.
+- [ElementNode](./dom/ElementNode.h): an HTML element. It holds a tag name, a list of attributes and a list of child
   nodes.
 
 For example, this document:
 
 ```html
 <html>
-<head>
-    <title>My page</title>
-</head>
-<body>
-    <h1 id="title">Hello world</h1>
-</body>
+    <head>
+        <title>My page</title>
+    </head>
+    <body>
+        <h1 id="title">Hello world</h1>
+    </body>
 </html>
 ```
 

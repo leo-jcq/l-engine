@@ -1,7 +1,7 @@
 #ifndef L_ENGINE_NODETYPE_H
 #define L_ENGINE_NODETYPE_H
 
-namespace html {
+namespace dom {
     /// The type of a Node in the parsed HTML tree.
     enum class NodeType {
         /**

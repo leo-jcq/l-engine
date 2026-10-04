@@ -2,9 +2,9 @@
 
 #include <stdexcept>
 
-namespace html {
-    int Node::getTotalElementNodeChildrens() const {
-        throw std::runtime_error("getTotalNodeChildrens() not implemented for base Node class");
+namespace dom {
+    int Node::getTotalElementNodeChildren() const {
+        throw std::runtime_error("getTotalNodeChildren() not implemented for base Node class");
     }
 
     void Node::toHTML(std::string &, const int) const {
