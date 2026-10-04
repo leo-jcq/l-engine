@@ -1,36 +1,11 @@
 cmake_minimum_required(VERSION 4.2)
-project(l-engine)
+project(l-engine LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_executable(l-engine main.cpp
-        BaseParser.cpp
-        BaseParser.h
-        html/Node.h
-        html/Node.cpp
-        html/NodeType.h
-        html/TextNode.h
-        html/TextNode.cpp
-        html/ElementNode.h
-        html/ElementNode.cpp
-        html/Parser.h
-        html/Parser.cpp
-        css/Selector.cpp
-        css/Selector.h
-        css/Rule.cpp
-        css/Rule.h
-        css/Declaration.cpp
-        css/Declaration.h
-        css/Color.h
-        css/Color.cpp
-        css/Unit.h
-        css/Dimension.cpp
-        css/Dimension.h
-        css/Parser.cpp
-        css/Parser.h
-        css/Stylesheet.cpp
-        css/Stylesheet.h
-        utils.h
-        utils.h
-        files.h
-        files.cpp)
+file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/*.cpp")
+list(FILTER SOURCES EXCLUDE REGEX "/(build|cmake-build[^/]*)/")
+
+add_executable(l-engine ${SOURCES})
+target_include_directories(l-engine PRIVATE ${CMAKE_SOURCE_DIR})
