@@ -33,12 +33,7 @@ namespace html {
          * Parse a single node from the input, which can be either an element or a text node.
          * @return A unique pointer to a Node object representing the parsed node.
          */
-        std::unique_ptr<Node> parseNode() {
-            if (startsWith("<"))
-                return parseElement();
-
-            return parseText();
-        }
+        std::unique_ptr<Node> parseNode();
 
         /**
          * Parse an element node from the input, consisting of a tag name, attributes, and child nodes.

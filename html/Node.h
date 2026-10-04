@@ -1,6 +1,8 @@
 #ifndef L_ENGINE_NODE_H
 #define L_ENGINE_NODE_H
 
+#include <string>
+
 #include "NodeType.h"
 
 namespace html {
@@ -29,6 +31,19 @@ namespace html {
         [[nodiscard]] const NodeType &getType() const {
             return type;
         }
+
+        /**
+         * Get the total number of child nodes that are of type ElementNode, recursively counting all descendants.
+         * @return The total number of child nodes that are of type ElementNode, recursively counting all descendants.
+         */
+        [[nodiscard]] virtual int getTotalElementNodeChildrens() const;
+
+        /**
+         * Convert this node and its children to an HTML string representation, appending it to the given output string.
+         * @param out The output string.
+         * @param level The current indentation level (used for pretty-printing).
+         */
+        virtual void toHTML(std::string &out, int level) const;
 
     protected:
         /**

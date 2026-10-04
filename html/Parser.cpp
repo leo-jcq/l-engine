@@ -27,9 +27,16 @@ namespace html {
 
         while (!eof() && !startsWith("</")) {
             nodes.push_back(parseNode());
+            consumeWhiteSpace();
         }
 
         return nodes;
+    }
+
+    std::unique_ptr<Node> Parser::parseNode() {
+        if (startsWith("<")) return parseElement();
+
+        return parseText();
     }
 
     std::unique_ptr<ElementNode> Parser::parseElement() {

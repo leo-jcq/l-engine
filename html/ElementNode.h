@@ -20,9 +20,9 @@ namespace html {
          * Construct a new ElementNode object.
          * @param tagName The tag name of this element (e.g. "div").
          * @param attrs The attributes of the element as a name -> value map.
-         * @param children The child nodes of the element.
+         * @param childrens The child nodes of the element.
          */
-        ElementNode(std::string tagName, AttrMap attrs, std::vector<std::unique_ptr<Node> > children);
+        ElementNode(std::string tagName, AttrMap attrs, std::vector<std::unique_ptr<Node> > childrens);
 
         /**
          * Get the tag name of this element (e.g. "div").
@@ -52,8 +52,12 @@ namespace html {
          * @return The child nodes of the element.
          */
         [[nodiscard]] const std::vector<std::unique_ptr<Node> > &getChildren() const {
-            return children;
+            return childrens;
         }
+
+        [[nodiscard]] int getTotalElementNodeChildrens() const override;
+
+        void toHTML(std::string &out, int level) const override;
 
     private:
         /// The tag name of the element (e.g. "div").
@@ -61,7 +65,7 @@ namespace html {
         /// The attributes of the element as a name -> value map.
         AttrMap attrs;
         /// The child nodes of the element.
-        std::vector<std::unique_ptr<Node> > children;
+        std::vector<std::unique_ptr<Node> > childrens;
     };
 }
 

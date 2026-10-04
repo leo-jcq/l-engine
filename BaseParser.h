@@ -84,7 +84,9 @@ protected:
 
     /// Consume whitespace characters from the input
     void consumeWhiteSpace() {
-        consumeWhile([](const char c) { return static_cast<bool>(std::isspace(static_cast<unsigned char>(c))); });
+        consumeWhile([](const char c) {
+            return static_cast<bool>(std::isspace(static_cast<unsigned char>(c))) || c == '\n';
+        });
     }
 
     /**
