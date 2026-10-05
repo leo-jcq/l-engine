@@ -1,11 +1,11 @@
-#include "StyleTree.h"
+#include "style.h"
 
 #include <algorithm>
 
 #include "../css/Stylesheet.h"
 
 namespace style {
-    StyledNode StyleTree::applyStyle(const std::unique_ptr<dom::Node>& root, const css::Stylesheet& stylesheet) {
+    StyledNode applyStyle(const std::unique_ptr<dom::Node>& root, const css::Stylesheet& stylesheet) {
         std::vector<StyledNode> children;
         PropertyMap specifiedValues;
 
@@ -23,7 +23,7 @@ namespace style {
         return {root, specifiedValues, children};
     }
 
-    PropertyMap StyleTree::getSpecifiedValues(const dom::ElementNode& node, const css::Stylesheet& stylesheet) {
+    PropertyMap getSpecifiedValues(const dom::ElementNode& node, const css::Stylesheet& stylesheet) {
         std::vector<MatchedRule> rules = getMatchingRules(node, stylesheet);
         std::ranges::stable_sort(rules, [](const auto& a, const auto& b) {
             return std::get<0>(a) < std::get<0>(b);
@@ -41,8 +41,8 @@ namespace style {
         return values;
     }
 
-    std::vector<MatchedRule> StyleTree::getMatchingRules(const dom::ElementNode& node,
-                                                         const css::Stylesheet& stylesheet) {
+    std::vector<MatchedRule> getMatchingRules(const dom::ElementNode& node,
+                                              const css::Stylesheet& stylesheet) {
         std::vector<MatchedRule> rules;
 
         for (const css::Rule& rule : stylesheet.getRules()) {
@@ -54,7 +54,7 @@ namespace style {
         return rules;
     }
 
-    std::optional<MatchedRule> StyleTree::getMatchedRule(const dom::ElementNode& node, const css::Rule& rule) {
+    std::optional<MatchedRule> getMatchedRule(const dom::ElementNode& node, const css::Rule& rule) {
         for (const css::Selector& selector : rule.getSelectors()) {
             if (matches(node, selector)) {
                 return std::make_optional<MatchedRule>({selector.getSpecificity(), rule});
@@ -64,7 +64,7 @@ namespace style {
         return std::nullopt;
     }
 
-    bool StyleTree::matches(const dom::ElementNode& node, const css::Selector& selector) {
+    bool matches(const dom::ElementNode& node, const css::Selector& selector) {
         // Check tag selector
         if (selector.getTagName().has_value() && selector.getTagName().value() != node.getTagName()) {
             return false;

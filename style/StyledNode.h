@@ -18,6 +18,10 @@ namespace style {
     public:
         StyledNode(const std::unique_ptr<dom::Node>& node, PropertyMap specifiedValues, std::vector<StyledNode> children);
 
+        const std::vector<StyledNode>& getChildren() const {
+            return children;
+        }
+
         /**
          * Get the specified value of a property if it exists, otherwise @code std::nullopt@endcode.
          * @param name The name of the property.
