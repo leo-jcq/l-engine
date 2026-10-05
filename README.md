@@ -6,8 +6,6 @@ For english documentation, see [README.en.md](README.en.md).
 
 ## Introduction
 
-A simple web browser engine written in C++.
-
 Moteur de navigateur web simple, développé en C++.
 
 Pour l'instant, il ne parse que du HTML et du CSS basique, sans certaines fonctionnalités comme :
