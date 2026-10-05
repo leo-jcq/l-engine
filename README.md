@@ -1,51 +1,58 @@
 # L-Engine
 
-## Presentation
+For english documentation, see [README.en.md](README.en.md).
+
+## Sommaire
+
+## Introduction
 
 A simple web browser engine written in C++.
 
-For now, it only parses basic HTML and CSS without certain features like :
+Moteur de navigateur web simple, développé en C++.
 
-- HTML:
-    - Self-closing tags (e.g. `<img />`, `<br />`, etc.)
-    - HTML comments (e.g. `<!-- comment -->`)
-    - The `<!DOCTYPE html>` tag
-    - HTML entities (e.g. `&nbsp;`, `&lt;`, etc.)
-    - Boolean attributes (e.g. `disabled`)
-- CSS:
-    - Complex nested selectors with spaces (e.g. `tag.class` is supported but `tag .class` isn't)
-    - Pseudo-classes and pseudo-elements (e.g. `:active` or `::before`)
-    - Comments (e.g. `// ...` or `/* ... */`)
-    - Decimal value without a 0 at the start (e.g. `.5em`)
-    - At-rules (e.g. `@import` or `@media`)
+Pour l'instant, il ne parse que du HTML et du CSS basique, sans certaines fonctionnalités comme :
 
-## How it works
+- HTML :
+    - Les balises auto-fermantes (ex. `<img />`, `<br />`, etc.)
+    - Les commentaires HTML (ex. `<!-- commentaire -->`)
+    - La balise `<!DOCTYPE html>`
+    - Les entités HTML (ex. `&nbsp;`, `&lt;`, etc.)
+    - Les attributs booléens (ex. `disabled`)
+- CSS :
+    - Les sélecteurs imbriqués complexes avec des espaces (ex. `tag.class` est supporté mais pas `tag .class`)
+    - Les pseudo-classes et pseudo-éléments (ex. `:active` ou `::before`)
+    - Les commentaires (ex. `// ...` ou `/* ... */`)
+    - Les valeurs décimales sans 0 au début (ex. `.5em`)
+    - Les at-rules (ex. `@import` ou `@media`)
 
-### Model
+## Détails techniques
+
+### Modèle
 
 #### HTML
 
-An HTML document is represented as a tree of nodes. The base class [Node](./dom/Node.h) is the common type of all
-nodes in the tree. Two classes derive from it:
+Un document HTML est représenté comme un arbre de nœuds. La classe de base [Node](./dom/Node.h) est le type de base de
+tous les nœuds de l'arbre. Deux classes en héritent :
 
-- [TextNode](./dom/TextNode.h): a text segment of the document.
-- [ElementNode](./dom/ElementNode.h): an HTML element. It holds a tag name, a list of attributes and a list of child
-  nodes.
+- [TextNode](./dom/TextNode.h) : un segment de texte du document ;
+- [ElementNode](./dom/ElementNode.h) : un élément HTML. Il contient un nom de balise, une liste d'attributs et une liste
+  de nœuds enfants.
 
-For example, this document:
+Par exemple, ce document :
 
 ```html
+
 <html>
-    <head>
-        <title>My page</title>
-    </head>
-    <body>
-        <h1 id="title">Hello world</h1>
-    </body>
+<head>
+    <title>My page</title>
+</head>
+<body>
+<h1 id="title">Hello world</h1>
+</body>
 </html>
 ```
 
-is represented by the following tree:
+est représenté par l'arbre suivant :
 
 ```
 html                      // ElementNode
@@ -59,21 +66,21 @@ html                      // ElementNode
 
 #### CSS
 
-A stylesheet is represented by the [StyleSheet](./css/Stylesheet.h) class, which contains a list of
-[Rule](./css/Rule.h). Each rule has:
+Une feuille de style est représentée par la classe [StyleSheet](./css/Stylesheet.h), qui contient une liste
+de [Rule](./css/Rule.h). Chaque règle a :
 
-- one or more [selectors](./css/Selector.h): a selector has an optional tag name, an optional id and a list of class
-  names;
-- a list of [declarations](./css/Declaration.h): a declaration is a name (e.g. `color`, `margin`) associated with a
-  value.
+- un ou plusieurs [sélecteurs](./css/Selector.h) : un sélecteur a un nom de balise optionnel, un id optionnel et une
+  liste de noms de classes ;
+- une liste de [déclarations](./css/Declaration.h) : une déclaration est un nom (ex. `color`, `margin`) associé à une
+  valeur.
 
-A declaration value is one of:
+La valeur d'une déclaration est soit :
 
-- text;
-- a [color](./css/Color.h);
-- a numeric value with a [unit](./css/Unit.h), represented by the [Dimension](./css/Dimension.h) class.
+- du texte ;
+- une [couleur](./css/Color.h) ;
+- une valeur numérique avec une [unité](./css/Unit.h), représentée par la classe [Dimension](./css/Dimension.h).
 
-For example, the following rule:
+Par exemple, la règle suivante :
 
 ```css
 h1#title {
@@ -82,7 +89,7 @@ h1#title {
 }
 ```
 
-is mapped to the model as follows:
+est représentée dans le modèle comme suit :
 
 ```
 Rule
