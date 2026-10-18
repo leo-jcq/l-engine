@@ -2,11 +2,17 @@
 
 ## Summary
 
+- [Information](#information)
 - [Introduction](#introduction)
 - [How it works](#how-it-works)
-  - [Model](#model)
-    - [HTML](#html)
-    - [CSS](#css)
+    - [Model](#model)
+        - [HTML](#html)
+        - [CSS](#css)
+
+## Information
+
+This project is still under development. HTML and CSS parsing as well as layout construction are functional, but the
+rendering engine is not yet implemented.
 
 ## Introduction
 
@@ -43,13 +49,14 @@ nodes in the tree. Two classes derive from it:
 For example, this document:
 
 ```html
+
 <html>
-    <head>
-        <title>My page</title>
-    </head>
-    <body>
-        <h1 id="title">Hello world</h1>
-    </body>
+<head>
+    <title>My page</title>
+</head>
+<body>
+<h1 id="title">Hello world</h1>
+</body>
 </html>
 ```
 

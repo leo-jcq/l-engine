@@ -4,6 +4,18 @@ For english documentation, see [README.en.md](README.en.md).
 
 ## Sommaire
 
+- [Information](#information)
+- [Introduction](#introduction)
+    - [Détails techniques](#détails-techniques)
+        - [Model](#modèle)
+            - [HTML](#html)
+            - [CSS](#css)
+
+## Information
+
+Ce projet est encore en développement. Le parsing HTML et CSS ainsi que la construction du layout est fonctionnel, mais
+le moteur de rendu n'est pas encore implémenté.
+
 ## Introduction
 
 Moteur de navigateur web simple, développé en C++.
