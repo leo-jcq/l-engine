@@ -17,7 +17,7 @@ int main(const int argc, char *argv[]) {
     std::string html;
     node->toHTML(html, 0);
 
-    std::cout << html;
+    std::cout << html << std::endl;
 
     return 0;
 }

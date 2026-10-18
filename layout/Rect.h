@@ -1,5 +1,6 @@
 #ifndef L_ENGINE_RECT_H
 #define L_ENGINE_RECT_H
+#include "EdgeSizes.h"
 
 namespace layout {
     /// A rectangle in 2D space, defined by its top-left corner (x, y) and its width and height.
@@ -26,6 +27,20 @@ namespace layout {
          * @param height The height of the rectangle.
          */
         Rect(float x, float y, float width, float height);
+
+        /**
+         * Creates a new Rect that is expanded by the given EdgeSizes.
+         * @param edge The EdgeSizes to expand the rectangle by.
+         * @return A new Rect that is expanded by the given EdgeSizes.
+         */
+        [[nodiscard]] Rect expandedBy(const EdgeSizes& edge) const {
+            return {
+                x - edge.left,
+                y - edge.top,
+                width + edge.left + edge.right,
+                height + edge.top + edge.bottom
+            };
+        }
     };
 }
 

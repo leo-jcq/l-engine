@@ -7,28 +7,26 @@ namespace style {
                                                                children(std::move(children)) {
     }
 
-    std::optional<css::Value> StyledNode::getValue(const std::string& name) const {
-        const auto& val = specifiedValues.find(name);
-
-        return val == specifiedValues.end() ? std::nullopt : std::make_optional(val->second);
+    const css::Value* StyledNode::getValue(const std::string& name) const {
+        const auto it = specifiedValues.find(name);
+        return it == specifiedValues.end() ? nullptr : &it->second;
     }
 
-    css::Value StyledNode::lookup(const std::string& name, const std::string& fallbackName,
-                                  const css::Value& defaultVal) const {
-        std::optional<css::Value> val = getValue(name);
-
-        if (!val.has_value()) {
-            val = getValue(fallbackName);
+    const css::Value& StyledNode::lookup(const std::string& name, const std::string& fallbackName,
+                                         const css::Value& defaultVal) const {
+        if (const css::Value* val = getValue(name)) {
+            return *val;
+        }
+        if (const css::Value* fallback = getValue(fallbackName)) {
+            return *fallback;
         }
 
-        return val.has_value() ? val.value() : defaultVal;
+        return defaultVal;
     }
 
     Display StyledNode::getDisplay() const {
-        std::optional<css::Value> val = getValue("display");
-
-        if (!val.has_value() && std::holds_alternative<std::string>(val.value())) {
-            const std::string& displayValue = std::get<std::string>(val.value());
+        if (const css::Value* val = getValue("display"); val && std::holds_alternative<std::string>(*val)) {
+            const auto& displayValue = std::get<std::string>(*val);
 
             if (displayValue == "inline") {
                 return Display::Inline;
